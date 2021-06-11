@@ -1,0 +1,13 @@
+﻿  Board.cpp
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(195,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(196,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(253,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(254,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(594,20): warning C4018: '<': signed/unsigned mismatch
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(615,20): warning C4018: '<': signed/unsigned mismatch
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(667,20): warning C4018: '<': signed/unsigned mismatch
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(885,20): warning C4018: '<': signed/unsigned mismatch
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(894,20): warning C4018: '<': signed/unsigned mismatch
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(1014,20): warning C4018: '<': signed/unsigned mismatch
+D:\Projects\ChessGame Project\ChessGame Project\Board.cpp(1115,20): warning C4018: '<': signed/unsigned mismatch
+  ChessGame Project.vcxproj -> D:\Projects\ChessGame Project\Debug\ChessGame Project.exe
