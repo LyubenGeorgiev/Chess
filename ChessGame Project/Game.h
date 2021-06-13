@@ -1,5 +1,11 @@
 #pragma once
 #include "Board.h"
+
+
+/**
+ * \brief Helper class connecting Board and Window
+ * \author L. Georgiev
+ */
 class Game
 {
 private:
@@ -14,7 +20,6 @@ public:
 	void resize();
 
 	void handleMouseButtonDown(SDL_MouseButtonEvent& b);
-	void togglePromotionOptions();
 	void init();
 
 	void calculateBoardStates();
@@ -24,6 +29,5 @@ public:
 	~Game();
 
 	void makeRandomMove();
-
 
 };

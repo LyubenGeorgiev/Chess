@@ -7,6 +7,7 @@
 #include "Move.h"
 
 
+/// Enum for the type of a given piece
 enum class PieceType
 {
 	PAWN,
@@ -17,6 +18,11 @@ enum class PieceType
 	KING
 };
 
+
+/**
+ * \brief Parent class inherited by the actual pieces from chess
+ * \author L. Georgiev
+ */
 class Piece
 {
 protected:
@@ -53,10 +59,13 @@ public:
 		bool whiteCanQueensideCastle, bool blackCanKingsideCastle, 
 		bool blackCanQueensideCastle, std::vector<Move>& currentPseudo);
 
-
 };
 
 
+/**
+ * \brief A pawn with it's pseudo legal move rules
+ * \author L. Georgiev
+ */
 class Pawn : public Piece
 {
 private:
@@ -72,6 +81,10 @@ public:
 };
 
 
+/**
+ * \brief A rook with it's pseudo legal move rules
+ * \author L. Georgiev
+ */
 class Rook : public Piece
 {
 private:
@@ -87,6 +100,10 @@ public:
 };
 
 
+/**
+ * \brief A knight with it's pseudo legal move rules
+ * \author L. Georgiev
+ */
 class Knight : public Piece
 {
 private:
@@ -102,6 +119,10 @@ public:
 };
 
 
+/**
+ * \brief A bishop with it's pseudo legal move rules
+ * \author L. Georgiev
+ */
 class Bishop : public Piece
 {
 private:
@@ -117,6 +138,10 @@ public:
 };
 
 
+/**
+ * \brief A queen with it's pseudo legal move rules
+ * \author L. Georgiev
+ */
 class Queen : public Piece
 {
 private:
@@ -132,6 +157,10 @@ public:
 };
 
 
+/**
+ * \brief A king with it's pseudo legal move rules
+ * \author L. Georgiev
+ */
 class King : public Piece
 {
 private:

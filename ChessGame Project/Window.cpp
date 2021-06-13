@@ -6,6 +6,7 @@
 int Window::screenHeight = 0;
 int Window::screenWidth = 0;
 SDL_Renderer* Window::renderer = nullptr;
+
 Window::Window() {
 	frozen = true;
 }
@@ -50,16 +51,16 @@ void Window::handleEvents() {
 void Window::handleKeyDown(SDL_KeyboardEvent& key) {
 
 	switch (key.keysym.scancode) {
+	//Press 'r'
 	case(21):
 		game->reset();
 		break;
+	//Press 'c'
 	case 6:
 		game->calculateBoardStates();
 		break;
-	case 19:
-		game->togglePromotionOptions();
-		break;
 	case 53:
+	//Press '`' (the key above Tab)
 		game->makeRandomMove();
 		break;
 	default:
@@ -69,13 +70,6 @@ void Window::handleKeyDown(SDL_KeyboardEvent& key) {
 }
 void Window::handleKeyUp(SDL_KeyboardEvent& key) {
 
-	switch (key.keysym.scancode) {
-
-
-	default:
-		//std::cout << "Scancode is:" << key.keysym.scancode << std::endl;
-		break;
-	}
 }
 
 
@@ -184,7 +178,7 @@ void Window::init(const char* title, int xpos, int ypos, bool fullscreen) {
 
 }
 
-//sets the initial height and width to be a square that is 80% of the smallest dimension.
+
 void Window::calculateInitialWindowDimensions() {
 	SDL_DisplayMode DM;
 	SDL_GetCurrentDisplayMode(0, &DM);
@@ -200,5 +194,7 @@ void Window::calculateInitialWindowDimensions() {
 	else {
 		squareWidth = .8 * Width;
 	}
+	
+	
 	Window::screenHeight = Window::screenWidth = squareWidth;
 }

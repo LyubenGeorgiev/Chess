@@ -4,32 +4,39 @@
 #include "BoardState.h"
 #include "Box.h"
 
-
+/**
+ * \brief Class containing most of the game logic for chess
+ * \author L. Georgiev
+ */
 class Board
 {
 private:
 	SDL_Color boardColor1;
 	SDL_Color boardColor2;
 
-
 	BoardState* boardState;
 
+	//! Contains the pieces so in order to free the memory at the end.
 	std::vector<Piece*> pieceContainer;
 
 
-	//moving piece stuff.
+	// Moving piece stuff.
 	bool draggingPiece;
 	int draggingPieceX;
 	int draggingPieceY;
 	SDL_Texture* draggingPieceTexture;
 
-	//Move stuff
+	//! Has all moves that are following just the rules for moving a piece.
 	std::vector<Move> pseudoLegalMoves;
+	//! Has all actually legal moves in chess.
 	std::vector<Move> legalMoves;
 
+	//! Has the moves a piece you clicked on can make.
 	std::vector<Move> highlightMoves;
 
+	//! If a king is in check coordinates.
 	Box highlightKingBox;
+	//! Winner king coordinates.
 	Box winnerKing;
 
 	Move promotionMove;
@@ -61,27 +68,31 @@ public:
 	int getHeight();
 	BoardState* getBoardState();
 
+	//! Used this for debugging.
 	void printBoardState(BoardState*);
 
 	void renderPieces(BoardState*);
 	void renderPieceTexture(SDL_Texture*, int x, int y);
 
+	//! Loads a board form a given Forsyth–Edwards Notation.
 	void loadBoardFromFen(const char* fen, BoardState*);
-
 
 	void switchTurns(BoardState*);
 
-	//updates the en passant squares.
+	//! Updates the en passant squares.
 	void updateEnPassant(int, int, int, int, BoardState*);
 	bool isEnPassant(int fromX, int fromY, int toX, int toY, BoardState*);
 
-	//updates castling stuff.
+	//! If a king moves he loses the right to castle.
 	void updateCastling(int fromX, int fromY, int toX, int toY, BoardState*);
 
-	//calculating legal move stuff
+	
 	void clearMoves();
+	//! Calculates all moves that are following just the rules for moving a piece.
 	std::vector<Move> calculatePseudoLegalMoves(BoardState*);
+	//! Calculates all actually legal moves.
 	std::vector<Move> calculateLegalMoves(BoardState*);
+	//! Calculates all pseudo legal moves at given position.
 	void calculateMovesAt(int x, int y, BoardState*, std::vector<Move>&);
 
 
@@ -90,7 +101,6 @@ public:
 	bool inPseudoMoves(struct Move&);
 
 	void makeMove(struct Move, BoardState*);
-
 
 	//what moves should we highlight?
 	void renderHighlightMoves();
@@ -101,28 +111,25 @@ public:
 	void findKingLocation(int*, int*, BoardState*);
 	bool squareAttacked(int x, int y, BoardState* currentBoardState);
 
-
 	void updateHighlightKingBox();
 	void renderKingBox();
 
-	//game over stuff.
+
 	int isGameOver(BoardState* currentBoardState);
 
 	void reset();
 
+	//! Usefull for testing.
 	int totalPossibleFutureBoardPositions(BoardState*, int depth);
 	void calculateBoardStates();
 
 	void renderPromotionOptions();
-	void togglePromotionOptions();
 	void tryPickingPromotionPiece(int, int, BoardState*);
 
 	void promoteQueen(BoardState*);
 	void promoteRook(BoardState*);
 	void promoteBishop(BoardState*);
 	void promoteKnight(BoardState*);
-
-	//random moves down here:
 
 	void makeRandomMove(BoardState*);
 

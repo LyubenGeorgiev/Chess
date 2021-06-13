@@ -8,10 +8,6 @@ Game::~Game() {
 	delete(board);
 }
 
-void Game::togglePromotionOptions() {
-	board->togglePromotionOptions();
-}
-
 
 void Game::calculateBoardStates() {
 	board->calculateBoardStates();

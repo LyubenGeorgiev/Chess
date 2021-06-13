@@ -19,7 +19,8 @@ int Board::boxYHeight;
 int Board::boardXBoxes;
 int Board::boardYBoxes;
 
-void Board::reset() {
+void Board::reset()
+{
 	for (Piece* p : pieceContainer) {
 		delete p;
 	}
@@ -44,7 +45,8 @@ void Board::reset() {
 	gameOver = false;
 }
 
-void Board::init() {
+void Board::init()
+{
 	Piece::init();
 	boardXBoxes = 8;
 	boardYBoxes = 8;
@@ -84,18 +86,19 @@ void Board::init() {
 
 }
 
-Board::~Board() {
+Board::~Board()
+{
 	Piece::destroyImages();
 	for (Piece* p : pieceContainer) {
 		delete p;
 	}
 	pieceContainer.clear();
-
 	
 	delete boardState;
 }
 
-void Board::render(BoardState* currentBoardState) {
+void Board::render(BoardState* currentBoardState)
+{
 	renderBoard();
 	if (draggingPiece) {
 		renderHighlightMoves();
@@ -113,7 +116,8 @@ void Board::render(BoardState* currentBoardState) {
 
 }
 
-void Board::renderPromotionOptions() {
+void Board::renderPromotionOptions()
+{
 	SDL_Rect renderRect;
 	renderRect.w = boxXWidth * 2;
 	renderRect.h = boxYHeight * 2;
@@ -171,19 +175,12 @@ void Board::renderPromotionOptions() {
 		fromRect.w = w;
 		fromRect.h = h;
 		SDL_RenderCopy(Window::renderer, Piece::blackKnightTexture, &fromRect, &renderRect);
-
 	}
-
-
-}
-
-void Board::togglePromotionOptions() {
-	std::cout << "toggling" << std::endl;
-	waitingForPromotionChoice = !waitingForPromotionChoice;
 }
 
 
-void Board::renderDraggedPiece() {
+void Board::renderDraggedPiece()
+{
 	int w, h, mouseX, mouseY;
 	SDL_QueryTexture(draggingPieceTexture, NULL, NULL, &w, &h);
 	SDL_GetMouseState(&mouseX, &mouseY);
@@ -205,12 +202,13 @@ void Board::renderDraggedPiece() {
 
 }
 
-BoardState* Board::getBoardState() {
+BoardState* Board::getBoardState()
+{
 	return boardState;
 }
 
-void Board::renderBoard() {
-
+void Board::renderBoard()
+{
 	SDL_Rect drawRect;
 	drawRect.w = boxXWidth;
 	drawRect.h = boxYHeight;
@@ -227,7 +225,8 @@ void Board::renderBoard() {
 }
 
 
-void Board::renderPieces(BoardState* currentBoardState) {
+void Board::renderPieces(BoardState* currentBoardState)
+{
 	std::vector<std::vector<Piece*>>& board = currentBoardState->getBoard();
 
 	for (int x = 0; x < boardXBoxes; ++x) {
@@ -242,7 +241,8 @@ void Board::renderPieces(BoardState* currentBoardState) {
 }
 
 
-void Board::renderPieceTexture(SDL_Texture* texture, int x, int y) {
+void Board::renderPieceTexture(SDL_Texture* texture, int x, int y)
+{
 	int w, h;
 	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
 	SDL_Rect fromRect, toRect;
@@ -262,7 +262,8 @@ void Board::renderPieceTexture(SDL_Texture* texture, int x, int y) {
 }
 
 
-void Board::resize() {
+void Board::resize()
+{
 	boxXWidth = Window::screenWidth / boardXBoxes;
 	boxYHeight = Window::screenHeight / boardYBoxes;
 
@@ -275,15 +276,18 @@ void Board::resize() {
 }
 
 
-int Board::getHeight() {
+int Board::getHeight()
+{
 	return boardYBoxes * boxYHeight;
 }
 
-int Board::getWidth() {
+int Board::getWidth()
+{
 	return boardXBoxes * boxXWidth;
 }
 
-void Board::printBoardState(BoardState* currentBoardState) {
+void Board::printBoardState(BoardState* currentBoardState)
+{
 	if (currentBoardState->getWhiteCanKingsideCastle()) {
 		std::cout << "White can kingside castle." << std::endl;
 	}
@@ -314,10 +318,10 @@ void Board::printBoardState(BoardState* currentBoardState) {
 	else {
 		std::cout << " no en passant :( holy hell" << std::endl;
 	}
-
 }
 
-void Board::loadBoardFromFen(const char* fenNotation, BoardState* currentBoardState) {
+void Board::loadBoardFromFen(const char* fenNotation, BoardState* currentBoardState)
+{
 	int index = 0;
 	int column;
 
@@ -432,14 +436,12 @@ void Board::loadBoardFromFen(const char* fenNotation, BoardState* currentBoardSt
 		currentBoardState->setEnPassantY(boardYBoxes - (fenNotation[index] - '0'));
 		++index;
 	}
-
-	//come back and do move clocks later, ignore these for now becaues I'm lazy
-	//and don't want to parse c-strings :)
 }
 
 
 
-void Board::handleMouseButtonDown(SDL_MouseButtonEvent& b, BoardState* currentBoardState) {
+void Board::handleMouseButtonDown(SDL_MouseButtonEvent& b, BoardState* currentBoardState)
+{
 	int x, y, boardX, boardY;
 	if (b.button == SDL_BUTTON_LEFT) {
 		SDL_GetMouseState(&x, &y);
@@ -472,7 +474,8 @@ void Board::handleMouseButtonDown(SDL_MouseButtonEvent& b, BoardState* currentBo
 }
 
 
-void Board::tryPickingPromotionPiece(int x, int y, BoardState* currentBoardState) {
+void Board::tryPickingPromotionPiece(int x, int y, BoardState* currentBoardState)
+{
 	if (y == 3 || y == 4) {
 		switch (x / 2) {
 		case 0:
@@ -491,35 +494,41 @@ void Board::tryPickingPromotionPiece(int x, int y, BoardState* currentBoardState
 		}
 		waitingForPromotionChoice = false;
 		nextTurn(currentBoardState);
-
 	}
 }
 
-void Board::promoteQueen(BoardState* currentBoardState) {
+
+void Board::promoteQueen(BoardState* currentBoardState)
+{
 	makeMove({promotionMove.fromX,promotionMove.fromY,
 		promotionMove.toX,promotionMove.toY,
 		false,false,false,true,'q'}, currentBoardState);
-
 }
-void Board::promoteRook(BoardState* currentBoardState) {
+
+void Board::promoteRook(BoardState* currentBoardState)
+{
 	makeMove({ promotionMove.fromX,promotionMove.fromY,
 		promotionMove.toX,promotionMove.toY,
 		false,false,false,true,'r' }, currentBoardState);
 }
-void Board::promoteKnight(BoardState* currentBoardState) {
+
+void Board::promoteKnight(BoardState* currentBoardState)
+{
 	makeMove({ promotionMove.fromX,promotionMove.fromY,
 		promotionMove.toX,promotionMove.toY,
 		false,false,false,true,'n' }, currentBoardState);
 }
-void Board::promoteBishop(BoardState* currentBoardState) {
+
+void Board::promoteBishop(BoardState* currentBoardState)
+{
 	makeMove({ promotionMove.fromX,promotionMove.fromY,
 		promotionMove.toX,promotionMove.toY,
 		false,false,false,true,'b' }, currentBoardState);
 }
 
 
-void Board::attemptPickupPiece(int x, int y, BoardState* currentBoardState) {
-
+void Board::attemptPickupPiece(int x, int y, BoardState* currentBoardState)
+{
 	//if there's a piece on the board space we're clicking.
 	if (currentBoardState->getBoard()[x][y] != nullptr) {
 		//if it's the piece for the curernt players turn.
@@ -534,7 +543,9 @@ void Board::attemptPickupPiece(int x, int y, BoardState* currentBoardState) {
 	}
 }
 
-void Board::attemptPlacePiece(int x, int y, BoardState* currentBoardState) {
+
+void Board::attemptPlacePiece(int x, int y, BoardState* currentBoardState)
+{
 	Move newMove = { draggingPieceX,draggingPieceY,x,y };
 	int enPassantX = currentBoardState->getEnPassantX();
 	int enPassantY = currentBoardState->getEnPassantY();
@@ -567,32 +578,32 @@ void Board::attemptPlacePiece(int x, int y, BoardState* currentBoardState) {
 	else {
 		stopDraggingPiece();
 	}
-
 }
 
-void Board::nextTurn(BoardState* currentBoardState) {
+
+void Board::nextTurn(BoardState* currentBoardState)
+{
 	switchTurns(currentBoardState);
 
 	legalMoves = calculateLegalMoves(currentBoardState);
 
 	if (isGameOver(currentBoardState) == 1) {
 		gameOver = true;
-
 	}
 
 	updateHighlightKingBox();
 }
 
-void Board::switchTurns(BoardState* currentBoardState) {
-	currentBoardState->setCurrentTurn((currentBoardState->getCurrentTurn() == 'w') ? 'b' : 'w');
 
-	
+void Board::switchTurns(BoardState* currentBoardState)
+{
+	currentBoardState->setCurrentTurn((currentBoardState->getCurrentTurn() == 'w') ? 'b' : 'w');
 }
 
-bool Board::inLegalMoves(struct Move& newMove) {
 
+bool Board::inLegalMoves(struct Move& newMove)
+{
 	for (int i = 0; i < legalMoves.size(); i++) {
-		
 		if (newMove.fromX == legalMoves.at(i).fromX &&
 			newMove.toX == legalMoves.at(i).toX &&
 			newMove.fromY == legalMoves.at(i).fromY &&
@@ -610,8 +621,9 @@ bool Board::inLegalMoves(struct Move& newMove) {
 	return false;
 }
 
-bool Board::inPseudoMoves(struct Move& newMove) {
-	
+
+bool Board::inPseudoMoves(struct Move& newMove)
+{
 	for (int i = 0; i < pseudoLegalMoves.size(); i++) {
 		
 		if (newMove.fromX == pseudoLegalMoves.at(i).fromX &&
@@ -631,17 +643,23 @@ bool Board::inPseudoMoves(struct Move& newMove) {
 	return false;
 }
 
-void Board::stopDraggingPiece() {
+
+void Board::stopDraggingPiece()
+{
 	draggingPiece = false;
 	draggingPieceX = draggingPieceY = -1;
 }
 
-void Board::clearMoves() {
+
+void Board::clearMoves()
+{
 	pseudoLegalMoves.clear();
 	legalMoves.clear();
 }
 
-std::vector<Move> Board::calculatePseudoLegalMoves(BoardState* currentBoardState) {
+
+std::vector<Move> Board::calculatePseudoLegalMoves(BoardState* currentBoardState)
+{
 	std::vector<Move> returnVec;
 	for (int x = 0; x < boardXBoxes; ++x) {
 		for (int y = 0; y < boardYBoxes; ++y) {
@@ -651,23 +669,21 @@ std::vector<Move> Board::calculatePseudoLegalMoves(BoardState* currentBoardState
 					calculateMovesAt(x, y, currentBoardState, returnVec);
 				}
 			}
-
 		}
 	}
 
 	return returnVec;
 }
 
-std::vector<Move> Board::calculateLegalMoves(BoardState* currentBoardState) {
+
+std::vector<Move> Board::calculateLegalMoves(BoardState* currentBoardState)
+{
 	std::vector<Move> currentLegal;
 	//std::cout << "Calling this once" << std::endl;
 	
 	BoardState* newBoardState;
 	pseudoLegalMoves = calculatePseudoLegalMoves(currentBoardState);
 	for (int i = 0; i < pseudoLegalMoves.size(); i++) {
-		
-		
-		
 		//the king can't castle if it's in check
 		if (kingInCheck(currentBoardState)) {
 			if (pseudoLegalMoves.at(i).kingSideCastle) {
@@ -707,15 +723,10 @@ std::vector<Move> Board::calculateLegalMoves(BoardState* currentBoardState) {
 		}
 		newBoardState = BoardState::copyBoardState(currentBoardState);
 
-
 		makeMove(pseudoLegalMoves.at(i), newBoardState);
-		
 			
 		if (!kingInCheck(newBoardState)) {
-	
 			//because kingInCheck changed the vector... but it's not working
-			
-		
 			currentLegal.push_back({ pseudoLegalMoves.at(i).fromX,
 				pseudoLegalMoves.at(i).fromY,
 				pseudoLegalMoves.at(i).toX,
@@ -726,22 +737,20 @@ std::vector<Move> Board::calculateLegalMoves(BoardState* currentBoardState) {
 				pseudoLegalMoves.at(i).isPromotion,
 				pseudoLegalMoves.at(i).promotionType}
 				);
-			
 		}
 
 		delete newBoardState;
-		
 	}
 	return currentLegal;
 }
 
-void Board::makeMove(struct Move move, BoardState* currentBoardState) {
-	
+
+void Board::makeMove(struct Move move, BoardState* currentBoardState)
+{
 	std::vector<std::vector<Piece*>>& board = currentBoardState->getBoard();
 	int enPassantX = currentBoardState->getEnPassantX();
 	int enPassantY = currentBoardState->getEnPassantY();
 	if (isEnPassant(move.fromX, move.fromY, move.toX, move.toY, currentBoardState)) {
-		
 		//the piece removed depends on the turn.
 		if (currentBoardState->getCurrentTurn() == 'w') {
 			board[enPassantX][enPassantY + 1] = nullptr;
@@ -810,7 +819,8 @@ void Board::makeMove(struct Move move, BoardState* currentBoardState) {
 }
 
 
-void Board::calculateMovesAt(int x, int y, BoardState* currentBoardState, std::vector<Move>& currentPseudo) {
+void Board::calculateMovesAt(int x, int y, BoardState* currentBoardState, std::vector<Move>& currentPseudo) 
+{
 	currentBoardState->getBoard()[x][y]->getPseudoLegalMoves(currentBoardState->getBoard(), 
 		x, y, boardXBoxes, boardYBoxes, currentBoardState->getCurrentTurn(), 
 		currentBoardState->getEnPassantX(), currentBoardState->getEnPassantY(), 
@@ -820,8 +830,9 @@ void Board::calculateMovesAt(int x, int y, BoardState* currentBoardState, std::v
 }
 
 
-//update castling status.
-void Board::updateCastling(int fromX, int fromY, int toX, int toY, BoardState* currentBoardState) {
+
+void Board::updateCastling(int fromX, int fromY, int toX, int toY, BoardState* currentBoardState)
+{
 	//if the king moved.
 	int queenSideX = 0;
 	int kingSideX = boardXBoxes - 1;
@@ -876,7 +887,8 @@ void Board::updateCastling(int fromX, int fromY, int toX, int toY, BoardState* c
 }
 
 
-void Board::renderHighlightMoves() {
+void Board::renderHighlightMoves()
+{
 	SDL_Rect highlightRect;
 	highlightRect.w = boxXWidth;
 	highlightRect.h = boxYHeight;
@@ -889,7 +901,9 @@ void Board::renderHighlightMoves() {
 	}
 }
 
-void Board::createHighlightMoves(int x, int y) {
+
+void Board::createHighlightMoves(int x, int y)
+{
 	highlightMoves.clear();
 	for (int i = 0; i < legalMoves.size(); i++) {
 		if (legalMoves.at(i).fromX == x &&
@@ -905,20 +919,16 @@ void Board::createHighlightMoves(int x, int y) {
 }
 
 
-void Board::updateEnPassant(int fromX, int fromY, int toX, int toY, BoardState* currentBoardState) {
-	
+void Board::updateEnPassant(int fromX, int fromY, int toX, int toY, BoardState* currentBoardState)
+{
 	if (currentBoardState->getBoard()[fromX][fromY]->getPieceType() == PieceType::PAWN) {
-	
 		if (abs(fromY - toY) == 2) {
-			
 			currentBoardState->setEnPassantX(fromX);
 			currentBoardState->setEnPassantY((fromY + toY) / 2);
-
 		}
 		else {
 			currentBoardState->setEnPassantX(-1);
 			currentBoardState->setEnPassantY(-1);
-
 		}
 	}
 	else {
@@ -927,7 +937,9 @@ void Board::updateEnPassant(int fromX, int fromY, int toX, int toY, BoardState* 
 	}
 }
 
-void Board::findKingLocation(int* xPos, int* yPos, BoardState* currentBoardState) {
+
+void Board::findKingLocation(int* xPos, int* yPos, BoardState* currentBoardState) 
+{
 	char currentPlayer = currentBoardState->getCurrentTurn();
 	std::vector<std::vector<Piece*>>& board = currentBoardState->getBoard();
 	for (int x = 0; x < boardXBoxes; ++x) {
@@ -955,7 +967,9 @@ void Board::findKingLocation(int* xPos, int* yPos, BoardState* currentBoardState
 	}
 }
 
-bool Board::isEnPassant(int fromX, int fromY, int toX, int toY, BoardState* currentBoardState) {
+
+bool Board::isEnPassant(int fromX, int fromY, int toX, int toY, BoardState* currentBoardState)
+{
 	if (currentBoardState->getBoard()[fromX][fromY]->getPieceType() == PieceType::PAWN) {
 		if (toX == currentBoardState->getEnPassantX() && toY == currentBoardState->getEnPassantY()) {
 			return true;
@@ -965,47 +979,10 @@ bool Board::isEnPassant(int fromX, int fromY, int toX, int toY, BoardState* curr
 	return false;
 }
 
-bool Board::squareAttacked(int x, int y, BoardState* currentBoardState) {
+
+bool Board::squareAttacked(int x, int y, BoardState* currentBoardState)
+{
 	BoardState* newBoardState = BoardState::copyBoardState(currentBoardState);
-
-	//pawns attack differently than they move.
-	if (newBoardState->getCurrentTurn() == 'b') {
-		if (y + 1 < boardYBoxes) {
-			if (x - 1 >= 0) {
-				if (newBoardState->getBoard()[x - 1][y + 1] != nullptr && 
-					newBoardState->getBoard()[x - 1][y + 1]->isWhite() &&
-					newBoardState->getBoard()[x - 1][y + 1]->getPieceType() == PieceType::PAWN) {
-					return true;
-				}
-			}
-			if (x + 1 < boardXBoxes) {
-				if (newBoardState->getBoard()[x + 1][y + 1] != nullptr &&
-					newBoardState->getBoard()[x + 1][y + 1]->isWhite() &&
-					newBoardState->getBoard()[x + 1][y + 1]->getPieceType() == PieceType::PAWN) {
-					return true;
-				}
-			}
-		}
-	}
-	else {
-		if (y - 1 >= 0) {
-			if (x - 1 >= 0) {
-				if (newBoardState->getBoard()[x - 1][y - 1] != nullptr &&
-					!newBoardState->getBoard()[x - 1][y - 1]->isWhite() &&
-					newBoardState->getBoard()[x - 1][y - 1]->getPieceType() == PieceType::PAWN) {
-					return true;
-				}
-			}
-			if (x + 1 < boardXBoxes) {
-				if (newBoardState->getBoard()[x + 1][y - 1] != nullptr &&
-					!newBoardState->getBoard()[x + 1][y - 1]->isWhite() &&
-					newBoardState->getBoard()[x + 1][y - 1]->getPieceType() == PieceType::PAWN) {
-					return true;
-				}
-			}
-		}
-	}
-
 
 	switchTurns(newBoardState);
 
@@ -1014,33 +991,29 @@ bool Board::squareAttacked(int x, int y, BoardState* currentBoardState) {
 	for (int i = 0; i < currentPseudo.size(); i++) {
 		if (currentPseudo.at(i).toX == x && currentPseudo.at(i).toY == y) {
 			return true;
-
 		}
 	}
-
 	
 	delete newBoardState;
 	return false;
 }
 
-//figure out... is the king in check?
-bool Board::kingInCheck(BoardState* currentBoardState) {
+
+bool Board::kingInCheck(BoardState* currentBoardState)
+{
 	//if the current players king is under attack then the king is in check.
 	int kingX, kingY;
 	findKingLocation(&kingX, &kingY, currentBoardState);
 
 	bool result = squareAttacked(kingX, kingY, currentBoardState);
 
-	
 	return result;
-
 }
 
 
-void Board::updateHighlightKingBox() {
-	//optimize this later, probably fine though.
+void Board::updateHighlightKingBox()
+{
 	if (kingInCheck(boardState)) {
-		
 		findKingLocation(&highlightKingBox.x, &highlightKingBox.y, boardState);
 	}
 	else {
@@ -1052,11 +1025,11 @@ void Board::updateHighlightKingBox() {
 		findKingLocation(&winnerKing.x, &winnerKing.y, newBoardState);
 		delete newBoardState;
 	}
-
-	
 }
 
-void Board::renderKingBox() {
+
+void Board::renderKingBox()
+{
 	SDL_Rect highlightRect;
 	highlightRect.w = boxXWidth;
 	highlightRect.h = boxYHeight;
@@ -1079,7 +1052,9 @@ void Board::renderKingBox() {
 	}
 }
 
-int Board::isGameOver(BoardState* currentBoardState) {
+
+int Board::isGameOver(BoardState* currentBoardState)
+{
 	std::vector<Move> currentLegalMoves = calculateLegalMoves(currentBoardState);
 	if (currentLegalMoves.size() == 0) {
 		if (kingInCheck(currentBoardState)) {
@@ -1097,7 +1072,8 @@ int Board::isGameOver(BoardState* currentBoardState) {
 }
 
 
-void Board::calculateBoardStates() {
+void Board::calculateBoardStates()
+{
 	int initialTime = SDL_GetTicks();
 	std::cout << "Total Board states in 1 move: " << totalPossibleFutureBoardPositions(boardState, 1) << std::endl;
 	std::cout << "Took : " << SDL_GetTicks() - initialTime << " Milliseconds" << std::endl;
@@ -1106,7 +1082,9 @@ void Board::calculateBoardStates() {
 	std::cout << "Took : " << SDL_GetTicks() - initialTime << " Milliseconds" << std::endl;
 }
 
-int Board::totalPossibleFutureBoardPositions(BoardState* currentBoardState, int depth) {
+
+int Board::totalPossibleFutureBoardPositions(BoardState* currentBoardState, int depth)
+{
 	int totalAmount = 0;
 	if (depth == 0) {
 		return 1;		//if we're at the end then this is a board state
@@ -1118,19 +1096,18 @@ int Board::totalPossibleFutureBoardPositions(BoardState* currentBoardState, int 
 		makeMove(legalMoves.at(i), newBoardState);
 		switchTurns(newBoardState);
 		int amountOfMoves = totalPossibleFutureBoardPositions(newBoardState, depth - 1);
-		/*if (depth == 3) {
-			std::cout << "Amount after move: " << char('A' + legalMoves.at(i).fromX) << 8 - legalMoves.at(i).fromY <<
-				" " <<char ('A' +legalMoves.at(i).toX)  <<8 - legalMoves.at(i).toY <<" :"<< amountOfMoves << std::endl;
-		}*/
 		totalAmount += amountOfMoves;
+
 		delete newBoardState;
 	}
 	return totalAmount;
 }
 
 
-void Board::makeRandomMove(BoardState* currentBoardState) {
+void Board::makeRandomMove(BoardState* currentBoardState)
+{
 	legalMoves = calculateLegalMoves(currentBoardState);
+
 	if (legalMoves.size()) {
 		int choice = rand() % legalMoves.size();
 		makeMove(legalMoves.at(choice), currentBoardState);

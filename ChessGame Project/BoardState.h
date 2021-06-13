@@ -4,6 +4,10 @@
 #include "Piece.h"
 
 
+/**
+ * \brief Contains everything you need to know about the state of a game
+ * \author L. Georgiev
+ */
 class BoardState
 {
 public:
@@ -57,6 +61,4 @@ private:
 	int fullMoveClock;
 
 	int depth;	//0 for main state, add 1 for every move after it.
-
-
 };
